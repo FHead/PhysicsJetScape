@@ -110,8 +110,8 @@ class Emulator:
         print(ptp)
 
         noise0 = 0.5**2
-        noisemin = 0.01**2
-        noisemax = 1**2
+        noisemin = 0.0001**2
+        noisemax = 10**2
         if noise >= 0:
             noise0 = noise**2
             noisemin = noise**2 * 0.999
@@ -120,12 +120,12 @@ class Emulator:
         if kernelchoice == "Matern":
             kernel = (kernels.Matern(
                 length_scale = ptp,
-                length_scale_bounds = np.outer(ptp, (0.1, 10)),
+                length_scale_bounds = np.outer(ptp, (0.01, 100)),
                 nu = nu))
         elif kernelchoice == "MaternNoise":
             kernel = (kernels.Matern(
                 length_scale = ptp,
-                length_scale_bounds = np.outer(ptp, (0.1, 10)),
+                length_scale_bounds = np.outer(ptp, (0.01, 100)),
                 nu = nu)
                 + kernels.WhiteKernel(
                 noise_level = noise0,
@@ -133,7 +133,7 @@ class Emulator:
         elif kernelchoice == "MaternNoise1":
             kernel = (1. * kernels.Matern(
                 length_scale = ptp,
-                length_scale_bounds = np.outer(ptp, (0.1, 10)),
+                length_scale_bounds = np.outer(ptp, (0.01, 100)),
                 nu = nu)
                 + kernels.WhiteKernel(
                 noise_level = noise0,
@@ -141,7 +141,14 @@ class Emulator:
         elif kernelchoice == "RBF":
             kernel = (kernels.RBF(
                 length_scale = ptp,
-                length_scale_bounds = np.outer(ptp, (0.1, 10))))
+                length_scale_bounds = np.outer(ptp, (0.01, 100))))
+        elif kernelchoice == "RBFNoise":
+            kernel = (kernels.RBF(
+                length_scale = ptp,
+                length_scale_bounds = np.outer(ptp, (0.01, 100)))
+                + kernels.WhiteKernel(
+                noise_level = noise0,
+                noise_level_bounds = (noisemin, noisemax)))
         else:
             kernel = (
                 # kernels.ConstantKernel(1.0, (1e-3, 1e3))
@@ -388,7 +395,7 @@ if __name__ == '__main__':
     parser.add_argument('--noise', type = float, help = "noiselevel fix", default = -1)
 
     parser.add_argument('--kernelchoice', help = "what kernel to use", default = "Matern",
-        choices = ["Matern", "MaternNoise", "MaternNoise1", "RBF"])
+        choices = ["Matern", "MaternNoise", "MaternNoise1", "RBF", "RBFNoise"])
 
     parser.add_argument(
         'systems', nargs='*', type=arg_to_system,
