@@ -156,6 +156,8 @@ def ReadPrediction(FileName):
 
     # Then read the actual model predictions
     Result["Prediction"] = np.loadtxt(FileName).T
+    if len(Result["Prediction"].shape) == 1:   # 1D
+        Result["Prediction"] = Result["Prediction"].reshape(Result["Prediction"].shape[0], 1)
     return Result
 
 def InitializeCovariance(data):
