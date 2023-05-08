@@ -1,0 +1,10 @@
+# Version 1.0
+# DOI https://doi.org/10.1007/JHEP05(2021)284
+# Source https://www.hepdata.net/download/table/ins1848440/Figure%207-5/1/yaml
+# Experiment CMS
+# System PbPb5020
+# Centrality 0-10
+# XY PT RAA
+# Label xmin xmax y stat,low stat,high sys,low sys,high TAA,low TAA,high lumi,low lumi,high 
+400 500 0.75 0.03 0.03 0.11 0.11 0.08 0.08 0.02 0.02
+500 1000 0.786 0.067 0.067 0.058 0.058 0.079 0.079 0.018 0.018

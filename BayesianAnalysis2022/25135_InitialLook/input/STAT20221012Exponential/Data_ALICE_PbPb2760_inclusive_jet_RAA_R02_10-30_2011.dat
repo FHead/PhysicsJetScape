@@ -1,0 +1,13 @@
+# Version 1.0
+# DOI https://doi.org/10.1016/j.physletb.2015.04.039
+# Source https://www.hepdata.net/download/table/ins1343112/Table%207/1/yaml
+# Experiment ALICE
+# System PbPb2760
+# Centrality 10-30
+# XY PT RAA
+# Label xmin xmax y stat,low stat,high sys,shape,low sys,shape,high sys,corr,low sys,corr,high sys,TAA,low sys,TAA,high 
+30.0 40.0 0.333 0.0185 0.0185 0.0118 0.0118 0.0392 0.0392 0.017316 0.017316
+40.0 50.0 0.434 0.0323 0.0323 0.00784 0.00784 0.0549 0.0549 0.022568 0.022568
+50.0 60.0 0.397 0.0434 0.0434 0.0152 0.0152 0.049 0.049 0.020644 0.020644
+60.0 70.0 0.363 0.0517 0.0517 0.019 0.019 0.043 0.043 0.018876 0.018876
+70.0 90.0 0.427 0.0671 0.0671 0.0192 0.0192 0.0524 0.0524 0.022204 0.022204

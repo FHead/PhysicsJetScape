@@ -1,0 +1,91 @@
+BaseDirectory: 'input/STAT20220806/'
+Tag: 'TestAnalysis_8'
+Emulator:
+  NPC: 8
+  Kernel: 'MaternNoise'
+  NRetrain: 10
+MCMC:
+  NWalker: 50
+  NBurn: 1000
+  NStep: 500
+Design:
+  File: 'Design200.dat'
+  LogScale: [2, 3, 5]
+  ListToDelete: [5, 16, 18, 27, 34, 36, 37, 38, 39, 43, 48, 51, 65, 69, 70, 71, 72, 73, 79, 84, 89, 91, 100, 104, 107, 111, 116, 121, 125, 127, 136, 143, 147, 151, 154, 160, 168, 172, 182]
+  Range:
+    - [0.1, 0.5]
+    - [1, 10]
+    - [0.005, 10]
+    - [0.005, 10]
+    - [0, 1.5]
+    - [0.05, 100]
+Data:
+  PHENIX_200_Hadron_0To10:
+    Data: 'Data_PHENIX_AuAu200_hadron_RAA_pi0_0-10_2013.dat'
+    Prediction: 'Prediction_phenix_AuAu200exponential_hadron_pt_pi0_0to10_values.dat'
+    PredictionExclude: [0, 1, 2, 3, 4, 5, 6, 7]
+  STAR_200_JetR02_0To10:
+    Data: 'Data_STAR_AuAu200_inclusive_chjet_RAA_R02_0-10_2011.dat'
+    DataExclude: [0, 1, 2]
+    Prediction: 'Prediction_star_AuAu200exponential_inclusive_chjet_pt_R0.2_0to10_values.dat'
+  STAR_200_JetR04_0To10:
+    Data: 'Data_STAR_AuAu200_inclusive_chjet_RAA_R04_0-10_2011.dat'
+    DataExclude: [0, 1, 2]
+    Prediction: 'Prediction_star_AuAu200exponential_inclusive_chjet_pt_R0.4_0to10_values.dat'
+  ATLAS_2760_Hadron_0To5:
+    Data: 'Data_ATLAS_PbPb2760_hadron_RAA_ch_0-5_2015.dat'
+    DataExclude: [0, 1, 2, 3, 4]
+    Prediction: 'Prediction_atlas_PbPb2760exponential_hadron_pt_ch_0to5_values.dat'
+    PredictionExclude: [0, 1, 2, 3, 4, 5]
+  ALICE_2760_JetR02_0To10:
+    Data: 'Data_ALICE_PbPb2760_inclusive_jet_RAA_R02_0-10_2011.dat'
+    Prediction: 'Prediction_alice_PbPb2760exponential_inclusive_jet_pt_R0.2_0to10_values.dat'
+  ATLAS_2760_Jet04_0To10:
+    Data: 'Data_ATLAS_PbPb2760_inclusive_jet_RAA_R04_0-10_2011.dat'
+    Prediction: 'Prediction_atlas_PbPb2760exponential_inclusive_jet_pt_R0.4_0to10_values.dat'
+  CMS_2760_JetR02_0To5:
+    Data: 'Data_CMS_PbPb2760_inclusive_jet_RAA_R02_0-5_2011.dat'
+    Prediction: 'Prediction_cms_PbPb2760exponential_inclusive_jet_pt_R0.2_0to5_values.dat'
+  CMS_2760_JetR02_5To10:
+    Data: 'Data_CMS_PbPb2760_inclusive_jet_RAA_R02_5-10_2011.dat'
+    Prediction: 'Prediction_cms_PbPb2760exponential_inclusive_jet_pt_R0.2_5to10_values.dat'
+  CMS_2760_JetR03_0To5:
+    Data: 'Data_CMS_PbPb2760_inclusive_jet_RAA_R03_0-5_2011.dat'
+    Prediction: 'Prediction_cms_PbPb2760exponential_inclusive_jet_pt_R0.3_0to5_values.dat'
+  CMS_2760_JetR03_5To10:
+    Data: 'Data_CMS_PbPb2760_inclusive_jet_RAA_R03_5-10_2011.dat'
+    Prediction: 'Prediction_cms_PbPb2760exponential_inclusive_jet_pt_R0.3_5to10_values.dat'
+  CMS_2760_JetR04_0To5:
+    Data: 'Data_CMS_PbPb2760_inclusive_jet_RAA_R04_0-5_2011.dat'
+    Prediction: 'Prediction_cms_PbPb2760exponential_inclusive_jet_pt_R0.4_0to5_values.dat'
+  CMS_2760_JetR04_5To10:
+    Data: 'Data_CMS_PbPb2760_inclusive_jet_RAA_R04_5-10_2011.dat'
+    Prediction: 'Prediction_cms_PbPb2760exponential_inclusive_jet_pt_R0.4_5to10_values.dat'
+  CMS_5020_Hadron_0To5:
+    Data: 'Data_CMS_PbPb5020_hadron_RAA_ch_0-5_2017.dat'
+    Prediction: 'Prediction_cms_PbPb5020exponential_hadron_pt_ch_0to5_values.dat'
+    PredictionExclude: [0, 1]
+  CMS_5020_Hadron_5To10:
+    Data: 'Data_CMS_PbPb5020_hadron_RAA_ch_5-10_2017.dat'
+    Prediction: 'Prediction_cms_PbPb5020exponential_hadron_pt_ch_5to10_values.dat'
+    PredictionExclude: [0, 1]
+  ALICE_5020_JetR02_0To10:
+    Data: 'Data_ALICE_PbPb5020_inclusive_jet_RAA_R02_0-10_2015.dat'
+    Prediction: 'Prediction_alice_PbPb5020exponential_inclusive_jet_pt_R0.2_0to10_values.dat'
+  ALICE_5020_JetR04_0To10:
+    Data: 'Data_ALICE_PbPb5020_inclusive_jet_RAA_R04_0-10_2015.dat'
+    Prediction: 'Prediction_alice_PbPb5020exponential_inclusive_jet_pt_R0.4_0to10_values.dat'
+  ATLAS_5020_JetR04_0To10:
+    Data: 'Data_ATLAS_PbPb5020_inclusive_jet_RAA_R04_0-10_2015.dat'
+    Prediction: 'Prediction_atlas_PbPb5020exponential_inclusive_jet_pt_R0.4_0to10_values.dat'
+  CMS_5020_JetR02_0To10:
+    Data: 'Data_CMS_PbPb5020_inclusive_jet_RAA_R02_0-10_2015.dat'
+    Prediction: 'Prediction_cms_PbPb5020exponential_inclusive_jet_pt_R0.2_0to10_values.dat'
+  CMS_5020_JetR03_0To10:
+    Data: 'Data_CMS_PbPb5020_inclusive_jet_RAA_R03_0-10_2015.dat'
+    Prediction: 'Prediction_cms_PbPb5020exponential_inclusive_jet_pt_R0.3_0to10_values.dat'
+  CMS_5020_JetR04_0To10:
+    Data: 'Data_CMS_PbPb5020_inclusive_jet_RAA_R04_0-10_2015.dat'
+    Prediction: 'Prediction_cms_PbPb5020exponential_inclusive_jet_pt_R0.4_0to10_values.dat'
+
+
