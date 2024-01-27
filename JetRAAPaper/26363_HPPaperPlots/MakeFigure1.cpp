@@ -177,30 +177,26 @@ int main(int argc, char *argv[])
       AxisFix = MarginB + PadH * N;
       XAxisT[i] = new TGaxis(AxisMin, AxisFix, AxisMax, AxisFix, Min[i], Max[i], 505, "-");
       if(i != 0 && Sample2.size() > 0)
-      {
          SetAxis(XAxisT[i]);
+      if(Sample2.size() > 0)
          Latex.DrawLatex((AxisMin + AxisMax) / 2, AxisFix + MarginT * 0.6, Label[i].c_str());
-      }
 
       AxisMin = MarginB + PadH * i;
       AxisMax = MarginB + PadH * (i + 1);
       AxisFix = MarginL;
-      YAxisL[i] = new TGaxis(AxisFix, AxisMin, AxisFix, AxisMax, Min[i], Max[i], 505, "");
+      YAxisL[i] = new TGaxis(AxisFix, AxisMin, AxisFix, AxisMax, Min[N-1-i], Max[N-1-i], 505, "");
       if(i != N - 1)
-      {
          SetAxis(YAxisL[i]);
-         Latex.DrawLatex(AxisFix * 0.4, (AxisMin + AxisMax) / 2, Label[i].c_str());
-      }
+      Latex.DrawLatex(AxisFix * 0.4, (AxisMin + AxisMax) / 2, Label[N-1-i].c_str());
       
       AxisMin = MarginB + PadH * i;
       AxisMax = MarginB + PadH * (i + 1);
       AxisFix = MarginL + PadW * N;
-      YAxisR[i] = new TGaxis(AxisFix, AxisMin, AxisFix, AxisMax, Min[i], Max[i], 505, "+L");
+      YAxisR[i] = new TGaxis(AxisFix, AxisMin, AxisFix, AxisMax, Min[N-1-i], Max[N-1-i], 505, "+L");
       if(i != 0 && Sample2.size() > 0)
-      {
          SetAxis(YAxisR[i]);
-         Latex.DrawLatex(AxisFix + MarginR * 0.6, (AxisMin + AxisMax) / 2, Label[i].c_str());
-      }
+      if(Sample2.size() > 0)
+         Latex.DrawLatex(AxisFix + MarginR * 0.6, (AxisMin + AxisMax) / 2, Label[N-1-i].c_str());
    }
 
    // Draw things
