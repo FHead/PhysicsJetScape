@@ -11,16 +11,18 @@ using namespace std;
 #include "TGraphErrors.h"
 #include "TLatex.h"
 #include "TLegend.h"
+#include "TFile.h"
 
 #include "CommandLine.h"
 #include "SetStyle.h"
 
 #include "QHat.h"
 
+int main(int argc, char *argv[]);
+int GetColor(int ID);
+
 int main(int argc, char *argv[])
 {
-   vector<int> Colors = GetCVDColors6();
-
    CommandLine CL(argc, argv);
 
    vector<string> InputFileName = CL.GetStringVector("Input");
@@ -38,7 +40,10 @@ int main(int argc, char *argv[])
    double WorldYMax = 9.50;
    bool DoJet = CL.GetBool("DoJet", true);
    bool DoOld = CL.GetBool("DoOld", false);
+   string OldFileName = DoOld ? CL.Get("OldFileName") : "";
+   string OldLabel = DoOld ? CL.Get("OldLabel") : "";
    string OutputFileName = CL.Get("Output");
+   vector<int> ColorIndex = CL.GetIntVector("Color", vector<int>{-1, -2, -3, -4, -5, -6});
 
    int NFile = InputFileName.size();
 
@@ -95,7 +100,26 @@ int main(int argc, char *argv[])
    GJet.SetPoint(1, 0.460, 3.7);
    GJet.SetPointError(1, 0, 1.4);
    GJet.SetMarkerStyle(20);
-   GJet.SetLineWidth(2);
+   GJet.SetMarkerSize(2);
+   GJet.SetLineWidth(3);
+
+   TGraph G50Old, G90Old;
+   if(DoOld)
+   {
+      TFile OldFile(OldFileName.c_str());
+      G50Old = *((TGraph *)OldFile.Get("QHatT0"));
+      G90Old = *((TGraph *)OldFile.Get("QHatT90"));
+      OldFile.Close();
+
+      G90Old.SetPoint(G90Old.GetN(), G90Old.GetPointX(0), G90Old.GetPointY(0));
+      
+      G90Old.SetLineWidth(1);
+      G90Old.SetLineColorAlpha(GetColor(-5), 0.50);
+      G90Old.SetFillColorAlpha(GetColor(-5), 0.25);
+      G50Old.SetLineWidth(2);
+      G50Old.SetLineColor(GetColor(-5));
+      G50Old.SetFillColorAlpha(GetColor(-5), 0.25);
+   }
 
    TCanvas Canvas("Canvas", "", 1024, 1024);
 
@@ -109,15 +133,21 @@ int main(int argc, char *argv[])
    for(int iF = 0; iF < NFile; iF++)
    {
       G90[iF].SetLineWidth(1);
-      G90[iF].SetLineColorAlpha(Colors[iF], 0.50);
-      G90[iF].SetFillColorAlpha(Colors[iF], 0.25);
+      G90[iF].SetLineColorAlpha(GetColor(ColorIndex[iF]), 0.50);
+      G90[iF].SetFillColorAlpha(GetColor(ColorIndex[iF]), 0.25);
       G50[iF].SetLineWidth(2);
-      G50[iF].SetLineColor(Colors[iF]);
-      G50[iF].SetFillColorAlpha(Colors[iF], 0.25);
+      G50[iF].SetLineColor(GetColor(ColorIndex[iF]));
+      G50[iF].SetFillColorAlpha(GetColor(ColorIndex[iF]), 0.25);
 
       G90[iF].Draw("l");
       G90[iF].Draw("f");
       G50[iF].Draw("l");
+
+      if(DoOld == true)
+      {
+         G90Old.Draw("lf");
+         G50Old.Draw("l");
+      }
    }
 
    if(DoJet == true)
@@ -130,6 +160,11 @@ int main(int argc, char *argv[])
    Latex.SetTextAlign(33);
    Latex.DrawLatex(0.87, 0.87, "E = 100 GeV");
    Latex.DrawLatex(0.87, 0.82, "Posterior median and 90% range");
+   if(DoOld == true)
+   {
+      Latex.SetTextAlign(11);
+      Latex.DrawLatex(0.10, 0.91, ("(From previous paper: " + OldLabel + ")").c_str());
+   }
 
    TLegend Legend(0.55, 0.75, 0.80, 0.75 - 0.07 * NFile - 0.07 * DoOld - 0.07 * DoJet);
    Legend.SetTextFont(42);
@@ -139,7 +174,7 @@ int main(int argc, char *argv[])
    for(int iF = 0; iF < NFile; iF++)
       Legend.AddEntry(&G50[iF], Label[iF].c_str(), "lf");
    if(DoOld == true)
-      Legend.AddEntry("", "PRC 104, 024905", "lf");
+      Legend.AddEntry(&G50Old, "PRC 104, 024905", "lf");
    if(DoJet == true)
       Legend.AddEntry(&GJet, "JET Collaboration", "pl");
    Legend.Draw();
@@ -148,6 +183,22 @@ int main(int argc, char *argv[])
 
    return 0;
 }
+
+int GetColor(int ID)
+{
+   static vector<int> Colors = GetCVDColors6();
+
+   if(ID == -1)   return Colors[0];
+   if(ID == -2)   return Colors[1];
+   if(ID == -3)   return Colors[2];
+   if(ID == -4)   return Colors[3];
+   if(ID == -5)   return Colors[4];
+   if(ID == -6)   return Colors[5];
+
+   return ID;
+}
+
+
 
 
 
