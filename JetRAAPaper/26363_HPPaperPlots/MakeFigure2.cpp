@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
    int StepCount = 100;
    double WorldXMin = 0.15;
    double WorldXMax = 0.50;
-   double WorldYMin = 2.05;
+   double WorldYMin = 0.00;
    double WorldYMax = 9.50;
    bool DoJet = CL.GetBool("DoJet", true);
    bool DoOld = CL.GetBool("DoOld", false);
