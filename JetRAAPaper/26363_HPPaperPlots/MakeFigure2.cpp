@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
    double WorldXMin = 0.15;
    double WorldXMax = 0.50;
    double WorldYMin = 0.00;
-   double WorldYMax = 9.50;
+   double WorldYMax = 18.50;   // 15.50 for gluon CA, 12.50 for quark CA
    bool DoJet = CL.GetBool("DoJet", true);
    bool DoOld = CL.GetBool("DoOld", false);
    string OldFileName = DoOld ? CL.Get("OldFileName") : "";
@@ -107,8 +107,16 @@ int main(int argc, char *argv[])
    if(DoOld)
    {
       TFile OldFile(OldFileName.c_str());
-      G50Old = *((TGraph *)OldFile.Get("QHatT0"));
-      G90Old = *((TGraph *)OldFile.Get("QHatT90"));
+      if(OldFile.Get("QHatT0") != nullptr && OldFile.Get("QHatT90") != nullptr)
+      {
+         G50Old = *((TGraph *)OldFile.Get("QHatT0"));
+         G90Old = *((TGraph *)OldFile.Get("QHatT90"));
+      }
+      else if(OldFile.Get("QHatTL0") != nullptr && OldFile.Get("QHatTL90") != nullptr)
+      {
+         G50Old = *((TGraph *)OldFile.Get("QHatTL0"));
+         G90Old = *((TGraph *)OldFile.Get("QHatTL90"));
+      }
       OldFile.Close();
 
       G90Old.SetPoint(G90Old.GetN(), G90Old.GetPointX(0), G90Old.GetPointY(0));
@@ -158,15 +166,18 @@ int main(int argc, char *argv[])
    Latex.SetTextSize(0.035);
    Latex.SetNDC();
    Latex.SetTextAlign(33);
-   Latex.DrawLatex(0.87, 0.87, "E = 100 GeV");
+   Latex.DrawLatex(0.87, 0.87, "E_{ref} = 100 GeV");
    Latex.DrawLatex(0.87, 0.82, "Posterior median and 90% range");
-   if(DoOld == true)
-   {
-      Latex.SetTextAlign(11);
-      Latex.DrawLatex(0.10, 0.91, ("(From previous paper: " + OldLabel + ")").c_str());
-   }
+   // if(DoOld == true && OldLabel != "")
+   // {
+   //    Latex.SetTextAlign(11);
+   //    Latex.DrawLatex(0.10, 0.91, ("(From previous paper: " + OldLabel + ")").c_str());
+   // }
 
-   TLegend Legend(0.55, 0.75, 0.80, 0.75 - 0.07 * NFile - 0.07 * DoOld - 0.07 * DoJet);
+   double LegendTop = 0.75 - 0.06 * (DoOld && DoJet);
+   double LegendBottom = LegendTop - 0.07 * NFile - 0.07 * DoOld;
+
+   TLegend Legend(0.25, LegendTop, 0.50, LegendBottom);
    Legend.SetTextFont(42);
    Legend.SetTextSize(0.035);
    Legend.SetFillStyle(0);
@@ -174,10 +185,23 @@ int main(int argc, char *argv[])
    for(int iF = 0; iF < NFile; iF++)
       Legend.AddEntry(&G50[iF], Label[iF].c_str(), "lf");
    if(DoOld == true)
-      Legend.AddEntry(&G50Old, "PRC 104, 024905", "lf");
-   if(DoJet == true)
-      Legend.AddEntry(&GJet, "JET Collaboration", "pl");
+      Legend.AddEntry(&G50Old, ("PRC '21 (hadron only): " + OldLabel).c_str(), "lf");
    Legend.Draw();
+
+   if(DoOld == true && DoJet == true)
+   {
+      Latex.SetTextAlign(11);
+      Latex.DrawLatex(0.255, LegendTop + 0.01, "JETSCAPE");
+   }
+
+   TLegend Legend2(0.50, LegendBottom, 0.75, LegendBottom - 0.07);
+   Legend2.SetTextFont(42);
+   Legend2.SetTextSize(0.035);
+   Legend2.SetFillStyle(0);
+   Legend2.SetBorderSize(0);
+   Legend2.AddEntry(&GJet, "JET Collaboration", "pl");
+   if(DoJet == true)
+      Legend2.Draw();
 
    Canvas.SaveAs(OutputFileName.c_str());
 

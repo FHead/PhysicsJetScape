@@ -17,7 +17,7 @@ using namespace std;
 
 int main(int argc, char *argv[]);
 vector<vector<double>> ReadSample(string FileName, int MaxSample);
-void SetAxis(TGaxis *A);
+void SetAxis(TGaxis *A, int N);
 
 int main(int argc, char *argv[])
 {
@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
 
    TLatex Latex;
    Latex.SetTextFont(42);
-   Latex.SetTextSize(0.035);
+   Latex.SetTextSize(0.035 * 4 / (N > 4 ? N : 4));
    Latex.SetTextAlign(22);
 
    vector<TGaxis *> XAxisB(N), XAxisT(N), YAxisL(N), YAxisR(N);
@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
       AxisMax = MarginL + PadW * (i + 1);
       AxisFix = MarginB;
       XAxisB[i] = new TGaxis(AxisMin, AxisFix, AxisMax, AxisFix, Min[i], Max[i], 505, "");
-      SetAxis(XAxisB[i]);
+      SetAxis(XAxisB[i], N);
       Latex.DrawLatex((AxisMin + AxisMax) / 2, AxisFix * 0.4, Label[i].c_str());
       
       AxisMin = MarginL + PadW * i;
@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
       AxisFix = MarginB + PadH * N;
       XAxisT[i] = new TGaxis(AxisMin, AxisFix, AxisMax, AxisFix, Min[i], Max[i], 505, "-");
       if(i != 0 && Sample2.size() > 0)
-         SetAxis(XAxisT[i]);
+         SetAxis(XAxisT[i], N);
       if(Sample2.size() > 0)
          Latex.DrawLatex((AxisMin + AxisMax) / 2, AxisFix + MarginT * 0.6, Label[i].c_str());
 
@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
       AxisFix = MarginL;
       YAxisL[i] = new TGaxis(AxisFix, AxisMin, AxisFix, AxisMax, Min[N-1-i], Max[N-1-i], 505, "");
       if(i != N - 1)
-         SetAxis(YAxisL[i]);
+         SetAxis(YAxisL[i], N);
       Latex.DrawLatex(AxisFix * 0.4, (AxisMin + AxisMax) / 2, Label[N-1-i].c_str());
       
       AxisMin = MarginB + PadH * i;
@@ -194,7 +194,7 @@ int main(int argc, char *argv[])
       AxisFix = MarginL + PadW * N;
       YAxisR[i] = new TGaxis(AxisFix, AxisMin, AxisFix, AxisMax, Min[N-1-i], Max[N-1-i], 505, "+L");
       if(i != 0 && Sample2.size() > 0)
-         SetAxis(YAxisR[i]);
+         SetAxis(YAxisR[i], N);
       if(Sample2.size() > 0)
          Latex.DrawLatex(AxisFix + MarginR * 0.6, (AxisMin + AxisMax) / 2, Label[N-1-i].c_str());
    }
@@ -227,9 +227,12 @@ int main(int argc, char *argv[])
       }
    }
 
-   TLegend Legend(0.1, 0.6, 0.7, 0.9);
+   double LegendX = (N < 3) ? 0.1 : 0.1;
+   double LegendY = (N < 3) ? 0.2 : 0.6;
+
+   TLegend Legend(LegendX, LegendY, LegendX + 0.6, LegendY + 0.3);
    Legend.SetTextFont(42);
-   Legend.SetTextSize(0.025 / PadH * (PadH * N + MarginB + MarginT));
+   Legend.SetTextSize(0.025 / PadH * (PadH * N + MarginB + MarginT) * 4 / (N > 4 ? N : 4));
    Legend.SetBorderSize(0);
    Legend.SetFillStyle(0);
    Legend.AddEntry(Histogram1[0], LegendText[0].c_str(), "l");
@@ -309,12 +312,12 @@ vector<vector<double>> ReadSample(string FileName, int MaxSample)
    return Result;
 }
 
-void SetAxis(TGaxis *A)
+void SetAxis(TGaxis *A, int N)
 {
    if(A == nullptr)
       return;
    A->SetLabelFont(42);
-   A->SetLabelSize(0.030);
+   A->SetLabelSize(0.030 * 4 / (N > 4 ? N : 4));
    // A.SetMaxDigits(6);
    // A.SetMoreLogLabels();
    // A.SetNoExponent();

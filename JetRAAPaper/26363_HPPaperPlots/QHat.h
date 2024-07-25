@@ -21,14 +21,17 @@ double RunningAlphaS(double MuSquare, double AlphaS)
 double QHat(double AlphaSFix, double T, double E, double Q)
 {
    const int ActiveFlavor = 3;
-   double CA = 3.0;
+   // double CA = 3.0;
+   double CA = 4.0 / 3.0;
    double DebyeMassSquare = AlphaSFix * 4 * M_PI * std::pow(T, 2.0) * (6.0 + ActiveFlavor) / 6;
    double ScaleNet = max(2 * E * T, 1.0);
 
-   // I removed T^3 here
-   double Answer = (CA * 50.4864 / M_PI) * RunningAlphaS(ScaleNet, ScaleNet) * AlphaSFix * std::fabs(std::log(ScaleNet / DebyeMassSquare));
+   // The answer here is qhat/T^3 in fact
+   // double Answer = (CA * 50.4864 / M_PI) * RunningAlphaS(ScaleNet, ScaleNet) * AlphaSFix * std::fabs(std::log(ScaleNet / DebyeMassSquare));
+   double Answer = (CA * 50.4864 / M_PI) * RunningAlphaS(ScaleNet, AlphaSFix) * AlphaSFix * std::fabs(std::log(ScaleNet / DebyeMassSquare));
    
-   return Answer * 0.19732698;   // 1/GeV to fm
+   // return Answer * 0.19732698;   // 1/GeV to fm
+   return Answer;
 }
 
 std::vector<double> ReadAlphaS(std::string FileName)
