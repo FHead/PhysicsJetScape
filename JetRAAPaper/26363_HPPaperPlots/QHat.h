@@ -9,7 +9,7 @@ std::vector<double> ReadAlphaS(std::string FileName);
 
 double RunningAlphaS(double MuSquare, double AlphaS)
 {
-   if(MuSquare < 1.0)
+   if(MuSquare <= 1.0)
       return AlphaS;
    
    const int ActiveFlavor = 3;
